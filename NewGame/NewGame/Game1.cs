@@ -17,6 +17,8 @@ namespace NewGame
         // フィールド（このクラスの情報を記述）
         private GraphicsDeviceManager graphicsDeviceManager;//グラフィックスデバイスを管理するオブジェクト
         private SpriteBatch spriteBatch;//画像をスクリーン上に描画するためのオブジェクト
+        //テストまさき
+
 
         /// <summary>
         /// コンストラクタ
