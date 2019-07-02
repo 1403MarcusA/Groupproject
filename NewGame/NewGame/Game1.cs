@@ -2,7 +2,8 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-
+using NewGame.Actor;
+using NewGame.Def;
 /// <summary>
 /// プロジェクト名がnamespaceとなります
 /// </summary>
@@ -17,8 +18,9 @@ namespace NewGame
         // フィールド（このクラスの情報を記述）
         private GraphicsDeviceManager graphicsDeviceManager;//グラフィックスデバイスを管理するオブジェクト
         private SpriteBatch spriteBatch;//画像をスクリーン上に描画するためのオブジェクト
+        private Renderer renderer;
         //テストまさき
-
+        //テストマルクス
 
         /// <summary>
         /// コンストラクタ
@@ -30,6 +32,10 @@ namespace NewGame
             graphicsDeviceManager = new GraphicsDeviceManager(this);
             //コンテンツデータ（リソースデータ）のルートフォルダは"Contentに設定
             Content.RootDirectory = "Content";
+
+            //画面サイズです
+            graphicsDeviceManager.PreferredBackBufferWidth = Screen.Width;
+            graphicsDeviceManager.PreferredBackBufferHeight = Screen.Height;
         }
 
         /// <summary>
