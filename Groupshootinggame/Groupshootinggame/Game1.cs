@@ -18,6 +18,20 @@ namespace Groupshootinggame
         private GraphicsDeviceManager graphicsDeviceManager;//グラフィックスデバイスを管理するオブジェクト
         private SpriteBatch spriteBatch;//画像をスクリーン上に描画するためのオブジェクト
 
+
+        private Texture2D Player;
+        private Vector2 PlayerPos;
+        private Vector2 PlayerVelocity;
+
+        private Texture2D Enemy;
+        private Vector2 EnemyPos;
+        private Vector2 EnemyVelocity;
+
+        private Texture2D Hit;
+        private Texture2D Texture;
+        private Texture2D Texturell;
+
+        private bool Hitflag = false;
         /// <summary>
         /// コンストラクタ
         /// （new で実体生成された際、一番最初に一回呼び出される）
@@ -28,6 +42,8 @@ namespace Groupshootinggame
             graphicsDeviceManager = new GraphicsDeviceManager(this);
             //コンテンツデータ（リソースデータ）のルートフォルダは"Contentに設定
             Content.RootDirectory = "Content";
+            graphicsDeviceManager.PreferredBackBufferHeight = 500;
+            graphicsDeviceManager.PreferredBackBufferWidth = 500;
         }
 
         /// <summary>
@@ -37,7 +53,10 @@ namespace Groupshootinggame
         {
             // この下にロジックを記述
 
-
+            PlayerPos = new Vector2(250, 200);
+            PlayerVelocity = Vector2.Zero;
+            EnemyPos = new Vector2(250, 150);
+            EnemyVelocity = Vector2.Zero;
 
             // この上にロジックを記述
             base.Initialize();// 親クラスの初期化処理呼び出し。絶対に消すな！！
@@ -53,7 +72,9 @@ namespace Groupshootinggame
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // この下にロジックを記述
-
+            Player = Content.Load<Texture2D>("PlayerTest");
+            Enemy = Content.Load<Texture2D>("PlayerTest");
+            Hit = Content.Load<Texture2D>("HitTest");
 
             // この上にロジックを記述
         }
@@ -83,6 +104,57 @@ namespace Groupshootinggame
             {
                 Exit();
             }
+            PlayerVelocity = Vector2.Zero;
+            if (Keyboard.GetState().IsKeyDown(Keys.Down))
+            {
+                PlayerVelocity.Y = 0.5f;
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Up))
+            {
+                PlayerVelocity.Y = -0.5f;
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Left))
+            {
+                PlayerVelocity.X = -0.5f;
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Right))
+            {
+                PlayerVelocity.X = 0.5f;
+            }
+
+            if (PlayerVelocity.Length() != 0)
+            {
+                PlayerVelocity.Normalize();
+            }
+
+            float speed = 2.0f;
+            PlayerPos = PlayerPos + PlayerVelocity * speed;
+
+
+            float PlayerX = PlayerPos.X + 15.0f;
+            float PlayerY = PlayerPos.Y + 15.0f;
+
+            float EnemyX = EnemyPos.X + 15.0f;
+            float EnemyY = EnemyPos.Y + 15.0f;
+
+            float A = PlayerX - EnemyX;
+            float B = PlayerY - EnemyY;
+            float C = (A * A) + (B * B);
+
+            if (C <= A + B)
+            {
+                Hitflag = true;
+                Texture = Hit;
+                Texturell = Hit;
+            }
+            else
+            {
+                Texture = Player;
+                Texturell = Enemy;
+            }
 
             // この下に更新ロジックを記述
 
@@ -100,7 +172,10 @@ namespace Groupshootinggame
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // この下に描画ロジックを記述
-
+            spriteBatch.Begin();
+            spriteBatch.Draw(Texture, PlayerPos, Color.White);
+            spriteBatch.Draw(Texturell, EnemyPos, Color.White);
+            spriteBatch.End();
 
             //この上にロジックを記述
             base.Draw(gameTime); // 親クラスの更新処理呼び出し。絶対に消すな！！
