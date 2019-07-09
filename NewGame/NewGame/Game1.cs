@@ -17,8 +17,9 @@ namespace NewGame
     {
         // フィールド（このクラスの情報を記述）
         private GraphicsDeviceManager graphicsDeviceManager;//グラフィックスデバイスを管理するオブジェクト
-        private SpriteBatch spriteBatch;//画像をスクリーン上に描画するためのオブジェクト
+        //private SpriteBatch spriteBatch;//画像をスクリーン上に描画するためのオブジェクト
         private Renderer renderer;
+        private Boss boss;
         //テストまさき
         //テストマルクス
 
@@ -44,8 +45,8 @@ namespace NewGame
         protected override void Initialize()
         {
             // この下にロジックを記述
-
-
+            renderer = new Renderer(Content, GraphicsDevice);
+            boss = new Boss("bosstest", new Vector2(250,0),128,128);
 
             // この上にロジックを記述
             base.Initialize();// 親クラスの初期化処理呼び出し。絶対に消すな！！
@@ -58,10 +59,10 @@ namespace NewGame
         protected override void LoadContent()
         {
             // 画像を描画するために、スプライトバッチオブジェクトの実体生成
-            spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            //spriteBatch = new SpriteBatch(GraphicsDevice);
+            renderer = new Renderer(Content, GraphicsDevice);
             // この下にロジックを記述
-
+            renderer.LoadContent("bosstest");
 
             // この上にロジックを記述
         }
@@ -91,7 +92,7 @@ namespace NewGame
             {
                 Exit();
             }
-
+            boss.Update(gameTime);
             // この下に更新ロジックを記述
 
             // この上にロジックを記述
@@ -108,7 +109,11 @@ namespace NewGame
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // この下に描画ロジックを記述
+            renderer.Begin();
 
+            boss.Draw(renderer);
+
+            renderer.End();
 
             //この上にロジックを記述
             base.Draw(gameTime); // 親クラスの更新処理呼び出し。絶対に消すな！！
